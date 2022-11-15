@@ -28,11 +28,11 @@
             </thead>
             <tfoot>
             <tbody>
-                <tr th:each="cake: ${cakeList}">
-                    <td th:text="${cake.name}" />
-                    <td th:text="${cake.description}" />
-                    <td th:text="${cake.imageURL}" />
-                </tr>
+            <tr th:each="cake: ${cakeList}">
+                <td th:text="${cake.name}"/>
+                <td th:text="${cake.description}"/>
+                <td th:text="${cake.imageURL}"/>
+            </tr>
             </tbody>
         </table>
     </div>

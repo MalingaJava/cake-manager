@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,20 +21,25 @@ import java.util.Objects;
 @JsonRootName("cakes")
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class CakeDTO implements Serializable {
-    static final int MAX_NAME_LENGTH = 100, MAX_DESCRIPTION_LENGTH = 100, MAX_IMAGE_URL_LENGTH = 300;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Integer id;
-    @Column(name = "name", unique = true, nullable = false, length = MAX_NAME_LENGTH)
+    @Column(name = "name", unique = true, nullable = false, length = 40)
     @JsonProperty("name")
+    @NotNull
+    @Size (min = 2, max = 40)
     private String name;
-    @Column(name = "description", nullable = false, length = MAX_DESCRIPTION_LENGTH)
+    @Column(name = "description", nullable = false, length = 100)
     @JsonProperty("description")
+    @NotNull
+    @Size (min = 2, max = 100)
     private String description;
-    @Column(name = "image", nullable = false, length = MAX_IMAGE_URL_LENGTH)
+    @Column(name = "image", nullable = false, length = 100)
     @JsonProperty("image")
+    @NotNull
+    @Size (min = 2, max = 100)
     private String imageURL;
 
     public CakeDTO() {

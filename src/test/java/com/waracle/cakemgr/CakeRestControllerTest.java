@@ -20,7 +20,6 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,13 +52,13 @@ public class CakeRestControllerTest {
         }
     }
 
+    @DisplayName("Testing add cakes endpoint success")
     @Test
-    public void testPOSTCreatesCake() throws Exception {
+    public void testAddCakeSuccess() throws Exception {
         CakeDTO cake = new CakeDTO(
                 "Testing cake added by test suite",
                 "Testing cake created by test suite",
                 "www.google.com");
-        String json = new ObjectMapper().writeValueAsString(cake);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/cakes")
                         .content(asJsonString(cake))
@@ -77,6 +76,21 @@ public class CakeRestControllerTest {
         Optional<CakeDTO> addedCake = repository.findById(id);
         assertTrue("Saving cake failed", addedCake.isPresent());
         assertEquals("Testing cake added by test suite", addedCake.get().getName());
+    }
+
+    @DisplayName("Testing add cakes endpoint validation fail")
+    @Test
+    public void testAddCakeFail() throws Exception {
+        CakeDTO cake = new CakeDTO(
+                "Testing cake added by test suitehfjdsfhdjfhjskdfhsjkdfhdsjkfhsdjkfhdsjkfhsdjfhsd",
+                "Testing cake created by test suite",
+                "www.google.com");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/cakes")
+                        .content(asJsonString(cake))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
 
     @DisplayName("Testing get cakes endpoint success")

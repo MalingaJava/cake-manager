@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class CakeRestController {
     }
 
     @RequestMapping(value = "/cakes", method = RequestMethod.POST, produces = "application/json")
-    ResponseEntity<?> addCakes(@RequestBody CakeDTO cake) {
+    ResponseEntity<?> addCakes(@Valid @RequestBody CakeDTO cake) {
         CakeDTO saved = cakeRepository.save(cake);
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.LOCATION, format("/cake/%d", saved.getId()));
