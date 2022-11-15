@@ -55,3 +55,7 @@ share it with us.
 Please also keep a log of the changes you make as a text file and provide this to us with your submission.
 
 Good luck!
+
+
+http://localhost:8282/v2/api-docs
+http://localhost:8282/swagger-ui.html#/
