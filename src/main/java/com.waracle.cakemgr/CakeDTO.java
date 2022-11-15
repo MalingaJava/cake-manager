@@ -1,8 +1,12 @@
 package com.waracle.cakemgr;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @ToString
@@ -10,31 +14,32 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "cakes")
+@JsonRootName("cakes")
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class CakeDTO {
-
+public class CakeDTO implements Serializable {
     static final int MAX_NAME_LENGTH = 100, MAX_DESCRIPTION_LENGTH = 100, MAX_IMAGE_URL_LENGTH = 300;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Integer id;
     @Column(name = "name", unique = true, nullable = false, length = MAX_NAME_LENGTH)
+    @JsonProperty("name")
     private String name;
     @Column(name = "description", nullable = false, length = MAX_DESCRIPTION_LENGTH)
+    @JsonProperty("description")
     private String description;
     @Column(name = "image", nullable = false, length = MAX_IMAGE_URL_LENGTH)
+    @JsonProperty("image")
     private String imageURL;
 
     public CakeDTO(){}
 
-//    public CakeDTO(String name, String description, String imageURL) {
-//        isTrue(notEmpty(name).length() <= MAX_NAME_LENGTH);
-//        isTrue(notEmpty(description).length() <= MAX_DESCRIPTION_LENGTH);
-//        isTrue(notEmpty(imageURL).length() <= MAX_IMAGE_URL_LENGTH);
-//
-//        this.name = name;
-//        this.description = description;
-//        this.imageURL = imageURL;
-//    }
+    public CakeDTO(String name, String description, String imageURL) {
+        this.name = name;
+        this.description = description;
+        this.imageURL = imageURL;
+    }
 
     @Override
     public boolean equals(Object o) {

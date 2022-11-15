@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static java.lang.String.format;
 
 @RestController
@@ -19,9 +22,9 @@ public class CakeRestController {
     private CakeRepository cakeRepository;
 
     @RequestMapping(value = "/cakes", method = RequestMethod.GET, produces = "application/json")
-    ResponseEntity<Iterable<CakeDTO>> getCake() {
+    ResponseEntity<Map<String, Iterable<CakeDTO>>> getCake() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(cakeRepository.findAll());
+                .body(Collections.singletonMap("cakes",cakeRepository.findAll()));
     }
 
     @RequestMapping(value = "/cakes", method = RequestMethod.POST, produces = "application/json")
