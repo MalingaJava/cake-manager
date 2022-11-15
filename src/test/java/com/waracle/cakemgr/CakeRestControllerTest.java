@@ -11,9 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.RequestEntity.post;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,40 +53,31 @@ public class CakeRestControllerTest {
         }
     }
 
-//    @Test
-//    public void testGETCakes() throws Exception {
-//        String json = new ObjectMapper().writeValueAsString(singletonList(savedCake));
-//        mockMvc.perform(get("/cakes/"))
-//                .andExpect(status().isOk())
-//                .andExpect(result -> equals(json));
-//    }
-//
-//    @Test
-//    public void testPOSTCreatesCake() throws Exception {
-//
-//        String name = "new test cake via rest";
-//
-//        CakeDTO cake = new CakeDTO(
-//                name,
-//                "a test cake to be saved",
-//                "http://image_url");
-//        String json = new ObjectMapper().writeValueAsString(cake);
-//
-//        MvcResult mvcResult = mockMvc.perform(post("/cakes").contentType(MediaType.APPLICATION_JSON).content(json))
-//                .andExpect(status().isCreated())
-//                .andExpect(header().string("Location", containsString("/cake/")))
-//                .andReturn();
-//
-//        String location = mvcResult.getResponse().getHeader("Location");
-//
-//        // Location header is of the form /cake/id
-//        String[] parts = location.split("/cake/");
-//        int id = Integer.parseInt(parts[1]);
-//
-//        Optional<CakeDTO> newCake = repository.findById(id);
-//        assertTrue("the cake was not persisted", newCake.isPresent());
-//        assertEquals(name, newCake.get().getName());
-//    }
+    @Test
+    public void testPOSTCreatesCake() throws Exception {
+        CakeDTO cake = new CakeDTO(
+                "Testing cake added by test suite",
+                "Testing cake created by test suite",
+                "www.google.com");
+        String json = new ObjectMapper().writeValueAsString(cake);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/cakes")
+                        .content(asJsonString(cake))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", containsString("/cake/")))
+                .andReturn();
+
+        String location = mvcResult.getResponse().getHeader("Location");
+
+        // Location header is of the form /cake/id
+        String[] parts = Objects.requireNonNull(location).split("/cake/");
+        int id = Integer.parseInt(parts[1]);
+
+        Optional<CakeDTO> addedCake = repository.findById(id);
+        assertTrue("Saving cake failed", addedCake.isPresent());
+        assertEquals("Testing cake added by test suite", addedCake.get().getName());
+    }
 
     @DisplayName("Testing get cakes endpoint success")
     @Test
@@ -116,4 +115,5 @@ public class CakeRestControllerTest {
                 .andExpect(model().attribute("cakeList", notNullValue()))
                 .andExpect(content().string(containsString("Cake manager list of cakes")));
     }
+
 }
