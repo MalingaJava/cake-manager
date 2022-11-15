@@ -1,0 +1,7 @@
+CREATE TABLE cakes (
+    id   INTEGER      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    image VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);

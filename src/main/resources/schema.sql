@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS cakes;
+
+CREATE TABLE cakes (
+    id   INT  AUTO_INCREMENT NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    image VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);

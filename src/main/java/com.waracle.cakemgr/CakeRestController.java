@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import static java.lang.String.format;
 
@@ -18,8 +19,9 @@ public class CakeRestController {
     private CakeRepository cakeRepository;
 
     @RequestMapping(value = "/cakes", method = RequestMethod.GET, produces = "application/json")
-    Iterable<CakeDTO> getCakes() {
-        return cakeRepository.findAll();
+    ResponseEntity<Iterable<CakeDTO>> getCake() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cakeRepository.findAll());
     }
 
     @RequestMapping(value = "/cakes", method = RequestMethod.POST, produces = "application/json")
@@ -30,8 +32,4 @@ public class CakeRestController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/cake/{id}", method = RequestMethod.GET, produces = "application/json")
-    Optional<CakeDTO> getCake(@PathVariable Integer id) {
-        return cakeRepository.findById(id);
-    }
 }

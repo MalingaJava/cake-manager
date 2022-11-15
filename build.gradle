@@ -33,6 +33,7 @@ checkstyleMain {
 pmd {
     toolVersion = '6.7.0'
     ignoreFailures = false
+    pmdTest.enabled = false
 }
 
 tasks.withType(Checkstyle) {

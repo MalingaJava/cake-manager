@@ -1,16 +1,17 @@
 package com.waracle.cakemgr;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-import static org.apache.commons.lang3.Validate.isTrue;
-import static org.apache.commons.lang3.Validate.notEmpty;
-
 @ToString
 @Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "cakes")
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
@@ -27,18 +28,15 @@ public class CakeDTO {
     @Column(name = "image", nullable = false, length = MAX_IMAGE_URL_LENGTH)
     private String imageURL;
 
-    private CakeDTO() {
-    }
-
-    public CakeDTO(String name, String description, String imageURL) {
-        isTrue(notEmpty(name).length() <= MAX_NAME_LENGTH);
-        isTrue(notEmpty(description).length() <= MAX_DESCRIPTION_LENGTH);
-        isTrue(notEmpty(imageURL).length() <= MAX_IMAGE_URL_LENGTH);
-
-        this.name = name;
-        this.description = description;
-        this.imageURL = imageURL;
-    }
+//    public CakeDTO(String name, String description, String imageURL) {
+//        isTrue(notEmpty(name).length() <= MAX_NAME_LENGTH);
+//        isTrue(notEmpty(description).length() <= MAX_DESCRIPTION_LENGTH);
+//        isTrue(notEmpty(imageURL).length() <= MAX_IMAGE_URL_LENGTH);
+//
+//        this.name = name;
+//        this.description = description;
+//        this.imageURL = imageURL;
+//    }
 
     @Override
     public boolean equals(Object o) {
