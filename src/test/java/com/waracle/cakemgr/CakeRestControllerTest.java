@@ -11,14 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -85,16 +83,37 @@ public class CakeRestControllerTest {
     @DisplayName("Testing get cakes endpoint success")
     @Test
     public void testGETCake() throws Exception {
-        CakeDTO savedCake = new CakeDTO(
-                "Testing cake",
-                "Testing cake created by init scripts",
-                "www.google.com");
-
         mockMvc.perform(get("/cakes")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.cakes").isArray())
-                .andExpect(jsonPath("$.cakes[0].name").value("Testing cake"));
+                .andExpect(jsonPath("$.cakes[0].name").value("Testing cake"))
+                .andExpect(jsonPath("$.cakes[0].description").value(
+                        "Testing cake created by init scripts"))
+                .andExpect(jsonPath("$.cakes[0].image").value("www.google.com"))
+                .andExpect(jsonPath("$.cakes[1].name").value("Testing cake2"))
+                .andExpect(jsonPath("$.cakes[1].description").value(
+                        "Testing cake created by init scripts2"))
+                .andExpect(jsonPath("$.cakes[1].image").value("www.google2.com"));
+    }
+
+    @DisplayName("Testing invalid cake endpoint")
+    @Test
+    public void testInvalidCake() throws Exception {
+        mockMvc.perform(get("/cakes-invalid")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @DisplayName("Testing / cake endpoint with Thymeleaf")
+    @Test
+    public void hello() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attribute("cakeList", notNullValue()))
+                .andExpect(content().string(containsString("Cake manager list of cakes")));
     }
 }

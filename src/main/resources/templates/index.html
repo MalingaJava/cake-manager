@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <title>List of cakes</title>
+
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<main class="container" role="main">
+
+    <div class="starter-template">
+        <h1>Cake manager list of cakes</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Image URL</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tbody>
+                <tr th:each="cake: ${cakeList}">
+                    <td th:text="${cake.name}" />
+                    <td th:text="${cake.description}" />
+                    <td th:text="${cake.imageURL}" />
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}" type="text/javascript"></script>
+</body>
+</html>

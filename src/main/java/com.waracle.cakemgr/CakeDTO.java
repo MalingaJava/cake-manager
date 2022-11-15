@@ -3,7 +3,9 @@ package com.waracle.cakemgr;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +35,8 @@ public class CakeDTO implements Serializable {
     @JsonProperty("image")
     private String imageURL;
 
-    public CakeDTO(){}
+    public CakeDTO() {
+    }
 
     public CakeDTO(String name, String description, String imageURL) {
         this.name = name;
