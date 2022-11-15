@@ -1,9 +1,6 @@
 package com.waracle.cakemgr;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,7 +8,6 @@ import java.util.Objects;
 @ToString
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "cakes")
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
@@ -27,6 +23,8 @@ public class CakeDTO {
     private String description;
     @Column(name = "image", nullable = false, length = MAX_IMAGE_URL_LENGTH)
     private String imageURL;
+
+    public CakeDTO(){}
 
 //    public CakeDTO(String name, String description, String imageURL) {
 //        isTrue(notEmpty(name).length() <= MAX_NAME_LENGTH);
