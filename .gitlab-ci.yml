@@ -1,0 +1,63 @@
+image: docker:latest
+
+stages:
+    - unit test
+    - analyze on branch
+    - tag
+    - docker build
+    - deploy to dev
+    - deploy to prod
+
+test:unit:
+    image: gradle:jdk17-alpine
+    stage: unit test
+    script:
+        - ./gradlew test
+
+analyze on branch:sonarqube:
+    stage: analyze on branch
+    dependencies:
+        - test:unit
+    script:
+        # For this you need to set up sonarqube and configure it with gradle
+        - ./gradlew sonarqube
+
+tag master with tagmaker:
+    stage: tag
+    # This needs to implement
+
+docker build:
+    stage: docker build
+    dependencies:
+        - test:unit
+    script:
+        - docker build -t cake-maker:1.0 .
+
+publish docker:
+    stage: analyze java and publish docker
+    services:
+        - docker:dind
+    dependencies:
+        - publish java
+    script:
+        - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_PUSH_HOST}
+        - ./gradlew dockerPush --stacktrace -PrelVersion=${CI_COMMIT_TAG}
+    only:
+        - tags
+
+deploy to dev:
+  stage: deploy to dev
+  image: adoptopenjdk/openjdk11:alpine-jre
+  script:
+    - # Your deployment script goes here
+  only:
+    - master
+
+deploy to prod:
+  stage: deploy to prod
+  image: adoptopenjdk/openjdk11:alpine-jre
+  script:
+    - # Your deployment script goes here
+  only:
+    - master
+  when: manual

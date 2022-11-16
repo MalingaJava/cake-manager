@@ -56,6 +56,13 @@ Please also keep a log of the changes you make as a text file and provide this t
 
 Good luck!
 
-
+https://gist.githubusercontent.com/hart88/198f29ec5114a3ec3460/raw/8dd19a88f9b8d24c23d9960f3300d0c917a4f07c/cake.json
 http://localhost:8282/v2/api-docs
 http://localhost:8282/swagger-ui.html#/
+Thymeleafe
+VALIDATION
+CODE QUALITY TOOLS
+profiling
+unit tests TDD
+docker build -t name:tag .
+sudo docker run -d -p 8080:8080 -t spring-boot:1.0
